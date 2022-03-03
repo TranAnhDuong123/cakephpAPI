@@ -20,4 +20,14 @@ class CategoriesController extends AppController
         $this->response->body(json_encode($response));
         return $this->response->send();
     }
+
+    public function editCategory($id){
+        $this->Category->id = $id;
+        $requestData = $this->request->data;
+        $response = $this->Category->save($requestData);
+        $this->response->type('json');
+        $this->response->statusCode(200);
+        $this->response->body(json_encode($response));
+        return $this->response->send();
+    }
 }

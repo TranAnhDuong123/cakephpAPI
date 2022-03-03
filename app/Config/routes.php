@@ -28,9 +28,10 @@
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
 	Router::connect('/list-category', array('controller' => 'categories', 'action' => 'listCategory'));
 	Router::connect('/add-category', array('controller' => 'categories', 'action' => 'addCategory'));
+	Router::connect('/edit-category/:id', ['controller' => 'categories', 'action' => 'editCategory', '[method]' => ['POST']], ['pass' => ['id'], 'id' => '[0-9]+']);
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
- */
+ */	
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
 /**
