@@ -26,7 +26,8 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
-	Router::connect('/list-category', array('controller' => 'categories', 'action' => '', 'home'));
+	Router::connect('/list-category', array('controller' => 'categories', 'action' => 'listCategory'));
+	Router::connect('/add-category', array('controller' => 'categories', 'action' => 'addCategory'));
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
