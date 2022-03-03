@@ -29,6 +29,7 @@
 	Router::connect('/list-category', array('controller' => 'categories', 'action' => 'listCategory'));
 	Router::connect('/add-category', array('controller' => 'categories', 'action' => 'addCategory'));
 	Router::connect('/edit-category/:id', ['controller' => 'categories', 'action' => 'editCategory', '[method]' => ['POST']], ['pass' => ['id'], 'id' => '[0-9]+']);
+	Router::connect('/del-category/:id', ['controller' => 'categories', 'action' => 'delCategory', '[method]' => ['GET']], ['pass' => ['id'], 'id' => '[0-9]+']);
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */	

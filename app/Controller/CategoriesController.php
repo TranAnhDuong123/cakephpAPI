@@ -30,4 +30,12 @@ class CategoriesController extends AppController
         $this->response->body(json_encode($response));
         return $this->response->send();
     }
+
+    public function delCategory($id){
+        $categories = $this->Category->delete($id);
+        $this->response->type('json');
+        $this->response->statusCode(200);
+        $this->response->body(json_encode($categories));
+        return $this->response->send();
+    }
 }
