@@ -32,4 +32,12 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
     public $autoRender = false;
+
+    public function apiResponse($status, $response){
+        $this->response->type('json');
+        $this->response->statusCode($status);
+        $this->response->body(json_encode($response));
+        return $this->response->send();
+    }
+
 }
