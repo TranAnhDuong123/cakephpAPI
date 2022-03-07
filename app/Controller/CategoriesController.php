@@ -25,6 +25,29 @@ class CategoriesController extends AppController
         }
     }
 
+    public function searchCategory(){
+        $requestData = $this->request->data;
+        if($requestData && isset($requestData['keyword'])){ 
+            $response = $this->Category->find('all', array(
+                'conditions' => array(
+                    'name like' => '%'.$requestData['keyword'].'%',
+                    //'description like' => '%'.$requestData['keyword'].'%'
+                )
+            ));
+            if(!empty($response)){ 
+                $this->apiResponse(200,$response);
+            }
+            else{
+                $errors = array('No results returned');
+                $this->apiResponse(400,$errors);
+            }
+        }
+        else{
+            $errors = array('keyword does not exist');
+            $this->apiResponse(400,$errors);
+        }
+    }
+
     public function addCategory(){
         $requestData = $this->request->data; 
         $this->Category->set($requestData);
