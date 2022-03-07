@@ -9,18 +9,20 @@ class CategoriesController extends AppController
 
     public function listCategory($page = 2){
         $requestQuery = $this->request->query;
+        $explode = explode('.', $requestQuery['sort']); //Tách mảng thành chuỗi
+        //$explode = explode(',', $requestData['sort']);
         if(isset($requestQuery['limit']) && !empty($requestQuery['limit'])){
             $response = $this->Category->find('all');
             $this->paginate = array(
                 'limit' => $requestQuery['limit'],
-                'order' => array('id' => 'desc'),
+                'order' => array($explode['0'] => $explode['1']),
                 'page' => $requestQuery['page'],
+                'conditions' => array(
+                    'name like' => '%'.$requestQuery['keyword'].'%'
+                    //'description like' => '%'.$requestData['keyword'].'%'
+                )
             );
             $response = $this->paginate("Category");
-            $this->apiResponse(200,$response);
-        }
-        else{
-            $response = $this->Category->find('all');
             $this->apiResponse(200,$response);
         }
     }
