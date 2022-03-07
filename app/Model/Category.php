@@ -2,22 +2,27 @@
 class Category extends AppModel {
     var $name='Category';
     public $actsAs = array('Tree');
-    public $validate = array(
-        'name' =>array(
-            'not empty' => array(
-                'rule' => 'notBlank',
-                'message' => 'Name is required'
-            )
-        ),
-        'id' => array(
-            'Match Id' => array(
-                'rule' => 'matchId',
-                'message' => 'ID match failed'
+    function valid(){
+        $this->validate = array(
+           "name" => array(
+                "rule" => "notBlank",
+                "message" => "Name not empty !",
             ),
-            'not empty' => array(
-                'rule' => 'notBlank',
-                'message' => 'ID is required'
+            'id' => array(
+                'Match Id' => array(
+                    'rule' => 'matchId',
+                    'message' => 'ID match failed'
+                ),
+                'not empty' => array(
+                    'rule' => 'notBlank',
+                    'message' => 'ID is required'
+                )
             )
-        )
-    );
+      
+        );
+        if($this->validates($this->validate)) // nếu dữ liệu đã được validate (hợp lệ)
+            return TRUE;
+        else
+            return FALSE;
+    }
 }
