@@ -10,35 +10,22 @@ class CategoriesController extends AppController
     public function listCategory($page = 2){
         $requestQuery = $this->request->query;
         $query = array();
-        if(isset($requestQuery['limit']) && isset($requestQuery['page'])){
-            $query['limit'] = (!empty($requestQuery['limit']))?$requestQuery['limit']:3;
-            $query['page'] = (!empty($requestQuery['page']))?$requestQuery['page']:1;
+        if(isset($requestQuery['limit'])){
+            $query['limit'] = (!empty($requestQuery['limit'])) ? $requestQuery['limit'] : 3;
         }
-        elseif(isset($requestQuery['keyword']) && !empty($requestQuery['keyword'])){
+        if(isset($requestQuery['page'])){
+            $query['page'] = (!empty($requestQuery['page'])) ? $requestQuery['page'] : 1;
+        }
+        if(isset($requestQuery['keyword']) && !empty($requestQuery['keyword'])){
             $query['conditions'] = array(
                 'name like' => '%'.$requestQuery['keyword'].'%'
             );
         }
-        elseif(isset($requestQuery['sort'])){
-            if(!empty($requestQuery['sort'])){
-                if(strpos($requestQuery['sort'], '.')){
-                    $explode = explode('.', $requestQuery['sort']);
-                    $query['order'] = array(
-                        $explode['0'] => $explode['1']
-                    );
-                }
-                else{
-                    $query['order'] = array(
-                        $requestQuery['sort'] => 'desc'
-                    );
-
-                }
-            }
-        }else{
-            $response = $this->Category->find('all');
-            $this->apiResponse(200,$response);
-        }   
-        
+        if(isset($requestQuery['sort']) && !empty($requestQuery['sort'])){
+            // if(strpos($requestQuery['sort'], '.'))
+            $explode = explode('.', $requestQuery['sort']);
+            $query['order'] = (!empty($explode['1'])) ? array($explode[0] => $explode[1]) : array($explode[0] => 'desc');
+        } 
         $this->paginate = $query;
         $response = $this->paginate("Category");
         $this->apiResponse(200,$response);
