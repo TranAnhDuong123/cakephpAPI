@@ -33,11 +33,29 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
     public $autoRender = false;
 
+    public function beforeFilter()
+    {
+		if ($this->request->is("options")) {
+			// Set the headers
+			$this->response->header('Access-Control-Max-Age','86400');
+			$this->response->header('Access-Control-Allow-Headers','Accept,Origin,User-Agent,Content-Type,Authorization');
+			$this->response->header('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
+			$this->response->header('Access-Control-Allow-Origin','*');
+
+			$this->response->send();
+			$this->_stop();
+		} else {
+			$this->response->header('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
+			$this->response->header('Access-Control-Allow-Origin','*');
+		}
+
+		parent::beforeFilter();
+	}
+
     public function apiResponse($status, $response){
         $this->response->type('json');
         $this->response->statusCode($status);
         $this->response->body(json_encode($response));
-        return $this->response->send();
     }
 
 }

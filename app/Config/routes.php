@@ -26,8 +26,8 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
-	Router::connect('/list-category', array('controller' => 'categories', 'action' => 'listCategory'));
-	Router::connect('/add-category', array('controller' => 'categories', 'action' => 'addCategory'));
+	Router::connect('/list-category', array('controller' => 'categories', 'action' => 'listCategory', 'method' => 'GET'));
+	Router::connect('/add-category', array('controller' => 'categories', 'action' => 'addCategory', 'method' => 'POST'));
 	Router::connect('/edit-category/:id', ['controller' => 'categories', 'action' => 'editCategory', '[method]' => ['POST']], ['pass' => ['id'], 'id' => '[0-9]+']);
 	Router::connect('/del-category/:id', ['controller' => 'categories', 'action' => 'delCategory', '[method]' => ['DELETE']], ['pass' => ['id'], 'id' => '[0-9]+']);
 	Router::connect('/search-category', ['controller' => 'categories', 'action' => 'searchCategory', '[method]' => ['POST']], ['pass' => ['id'], 'id' => '[0-9]+']);

@@ -8,23 +8,20 @@ services:
     volumes:
       - .:/var/www/html
     ports:
-      - 2000:80
+      - 8000:80
+    depends_on: 
+      - db
+
+  db:
+    image: mysql:5
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
     environment:
       MYSQL_DATABASE: doctruyen
-      MYSQL_ROOT_PASSWORD: 123456
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-
-app:
-    container_name: app
-    build: ./docker/src
-    depends_on:
-      - mysql
-    links:
-      - mysql
-    volumes:
-      - ./:/var/www/html
-    ports:
-      - 3306:80
+      MYSQL_ROOT_PASSWORD: root
 
 volumes:
-  db:
+  db-data:
+    external: false
