@@ -25,14 +25,4 @@ class Category extends AppModel {
         else
             return FALSE;
     }
-    function checkLogin($name,$description){
-        $sql = "select name,description from categories where name='$name' and description='$description'";
-        $this->query($sql);
-        if($this->getNumRows()==0){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
 }

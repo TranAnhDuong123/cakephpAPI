@@ -22,7 +22,6 @@ class CategoriesController extends AppController
             );
         }
         if(isset($requestQuery['sort']) && !empty($requestQuery['sort'])){
-            // if(strpos($requestQuery['sort'], '.'))
             $explode = explode('.', $requestQuery['sort']);
             $query['order'] = (!empty($explode['1'])) ? array($explode[0] => $explode[1]) : array($explode[0] => 'desc');
         } 
@@ -96,7 +95,6 @@ class CategoriesController extends AppController
             $errors = array('ID match failed');
             $this->apiResponse(400,$errors);
         }
-
     }
 
     public function delCategory($id){
@@ -109,47 +107,5 @@ class CategoriesController extends AppController
             $errors = array('ID match failed');
             $this->apiResponse(400,$errors);
         }
-    }
-
-    public function login(){
-        $requestData = $this->request->data;
-        if(isset($requestData['name']) && isset($requestData['description']) && !empty($requestData['name']) && !empty($requestData['description'])){
-            // die('đúng');
-            $name = $requestData['name'];
-            $description = $requestData['description'];
-            if($this->Category->checkLogin($name,$description)){
-                // $response = array(
-                //     'name' => $requestData['name']
-                // );
-                $response = $this->Session->write("session",$name);
-                $this->apiResponse(200,$response);
-            }
-            else{
-                $error = "name and description fail";
-                $this->apiResponse(400,$error);
-            }
-        }
-        else{
-            // die('sai');
-            $error = "Name and description are not empty";
-            $this->apiResponse(400,$error);
-        }
-
-    }
-
-    public function info(){
-        if($this->Session->check("session")){
-            $name = $this->Session->read('session');
-            $this->apiResponse(200,$name);
-        }
-        else{
-            $error = "Chưa đăng nhập";
-            $this->apiResponse(400,$error);
-        }
-    }
-
-    public function logout(){
-        $response = $this->Session->delete('session');
-        $this->apiResponse(200,$response);
     }
 }
