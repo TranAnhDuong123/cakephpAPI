@@ -32,24 +32,53 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
     public $autoRender = false;
+	public $helpers = array('Form', 'Html', 'Time', 'Session', 'Js' => array('Jquery'));
 
-    public function beforeFilter()
-    {
-		if ($this->request->is("options")) {
-			// Set the headers
-			$this->response->header('Access-Control-Max-Age','86400');
-			$this->response->header('Access-Control-Allow-Headers','Accept,Origin,User-Agent,Content-Type,Authorization');
-			$this->response->header('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
-			$this->response->header('Access-Control-Allow-Origin','*');
+	public $components = array(
+		'Session',
+		'Auth'=>array(
+			'authenticate' => array(
+				'Blowfish' => array(
+					'userModel' => 'User',
+					'fields' => array('name' => 'name', 'password' => 'password'),
+				)
+			),
+			'loginAction' => array('admin'=>true, 'controller'=>'users', 'action'=>'login'),
+			'loginRedirect' => array('admin'=>true, 'controller'=>'categories', 'action'=>'listCategory'),
+			'logoutRedirect' => array('admin'=>true, 'controller'=>'users', 'action'=>'login'),
+			'authError' => 'You can not access that page',
+			'authorize' => array('Controller')
+		)
+	);
 
-			$this->response->send();
-			$this->_stop();
-		} else {
-			$this->response->header('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
-			$this->response->header('Access-Control-Allow-Origin','*');
-		}
+    // public function beforeFilter()
+    // {
+	// 	if ($this->request->is("options")) {
+	// 		// Set the headers
+	// 		$this->response->header('Access-Control-Max-Age','86400');
+	// 		$this->response->header('Access-Control-Allow-Headers','Accept,Origin,User-Agent,Content-Type,Authorization');
+	// 		$this->response->header('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
+	// 		$this->response->header('Access-Control-Allow-Origin','*');
 
-		parent::beforeFilter();
+	// 		$this->response->send();
+	// 		$this->_stop();
+	// 	} else {
+	// 		$this->response->header('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
+	// 		$this->response->header('Access-Control-Allow-Origin','*');
+	// 	}
+
+	// 	parent::beforeFilter();
+	// }
+
+	public function beforeFilter(){
+		if($this->params['prefix'] == "admin"){
+            if($this->Auth->loggedIn()){
+                $this->Auth->allow();
+            }
+        }else{
+            $this->Auth->allow();
+        }
+		$this->set('current_user', $this->Auth->user());
 	}
 
     public function apiResponse($status, $response){
@@ -58,4 +87,5 @@ class AppController extends Controller {
         $this->response->body(json_encode($response));
     }
 
+	
 }

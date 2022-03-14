@@ -2,9 +2,15 @@
 App::uses('AppController','Controller');
 class CategoriesController extends AppController
 {
-    var $name = "Categories";
-    var $components = array('Session');
-    var $helpers = array('Paginator','Html'); 
+    var $layout = 'admin';
+    var $uses = array('Category');
+    // var $name = "Categories";
+    // var $components = array('Session');
+    //var $helpers = array('Paginator','Html'); 
+
+    public function beforeFilter(){
+        parent::beforeFilter();
+    }
     
 
     public function listCategory(){

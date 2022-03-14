@@ -34,9 +34,9 @@
 	Router::connect('/del-category/:id', ['controller' => 'categories', 'action' => 'delCategory', '[method]' => ['DELETE']], ['pass' => ['id'], 'id' => '[0-9]+']);
 	Router::connect('/detail-category/:id', ['controller' => 'categories', 'action' => 'getDetail', '[method]' => ['GET']], ['pass' => ['id'], 'id' => '[0-9]+']);
 	Router::connect('/search-category', ['controller' => 'categories', 'action' => 'searchCategory', '[method]' => ['POST']], ['pass' => ['id'], 'id' => '[0-9]+']);
-	Router::connect('/login', ['controller' => 'users', 'action' => 'login', '[method]' => ['POST']], ['pass' => ['id'], 'id' => '[0-9]+']);
+	//Router::connect('/login', ['controller' => 'users', 'action' => 'login', '[method]' => ['POST']], ['pass' => ['id'], 'id' => '[0-9]+']);
 	Router::connect('/logout', ['controller' => 'users', 'action' => 'logout', '[method]' => ['POST']], ['pass' => ['id'], 'id' => '[0-9]+']);
-	//Router::connect('/info', ['controller' => 'users', 'action' => 'info', '[method]' => ['GET']], ['pass' => ['id'], 'id' => '[0-9]+']);
+	Router::connect('/admin', array('controller' => 'users', 'action' => 'login', 'admin' => true));
 	/**
  * ...and connect the rest of 'Pages' controller's URLs.
  */	

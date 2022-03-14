@@ -48,14 +48,27 @@ class User extends AppModel{
         )
     );
 
-    function checkLogin($name,$password){
-        $sql = "select name,password from users where name='$name' and password='$password'";
-        $this->query($sql);
-        if($this->getNumRows()==0){
-            return false;
+    public function beforeSave($options = array()) {
+        // Use bcrypt
+        if (isset($this->data['User']['password'])) {
+            $hash = Security::hash($this->data['User']['password'], 'blowfish');
+            $this->data['User']['password'] = $hash;
         }
-        else{
+        return true;
+    }
+    public function matchPasswords($data){
+        if($this->data['User']['password']==$this->data['User']['confirm_password']){
             return true;
         }
+        $this->invalidate('confirm_password', 'Không trùng khớp mật khẩu');
+        return false;
+    }
+    public function checkPassword($data){
+        $currentUser = $this->find('first', array('conditions'=>array('User.id= '.AuthComponent::user('id'))));
+        $hashPass = Security::hash($data['currentpassword'], 'blowfish', $currentUser['User']['password']);
+        if($currentUser['User']['password'] == $hashPass){
+            return true;
+        }
+        return false;
     }
 }
